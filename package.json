@@ -1,0 +1,30 @@
+{
+  "name": "rabbot-event-emitter",
+  "version": "1.0.0",
+  "description": "An event emitter interface over Rabbot",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppsreejith/rabbot-event-emitter.git"
+  },
+  "keywords": [
+    "rabbot",
+    "event-emitter",
+    "rabbitmq"
+  ],
+  "author": "ppsreejith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ppsreejith/rabbot-event-emitter/issues"
+  },
+  "homepage": "https://github.com/ppsreejith/rabbot-event-emitter#readme",
+  "dependencies": {
+    "rabbot": "^1.1.0"
+  }
+}

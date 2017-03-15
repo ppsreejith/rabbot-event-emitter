@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/ppsreejith/rabbot-event-emitter#readme",
   "dependencies": {
-    "rabbot": "^1.1.0"
+    "rabbot": "^1.1.0",
+    "tap": "^10.3.0"
   }
 }

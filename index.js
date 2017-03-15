@@ -40,7 +40,12 @@ module.exports = function ({config, events, log, listening}) {
     function handleMessage(message) {
         if (!message || !message.body || !message.body.type)
             log("This message is broken yo!");
-        return events.emit(EVENT_PREFIX + message.body.type, message.body.payload);
+        try {
+            events.emit(EVENT_PREFIX + message.body.type, message.body.payload);
+        } catch(err) {
+            message.nack();
+        }
+        message.ack();
     };
 
     function startListening() {

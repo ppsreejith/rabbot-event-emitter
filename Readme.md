@@ -4,6 +4,11 @@ An EventEmitter interface over [Rabbot](https://github.com/arobson/rabbot).
 
 The tests and usage documentation assumes a locally running RabbitMQ server with default settings.
 
+### Installation
+```
+npm install rabbot-event-emitter --save
+```
+
 ### Usage
 ```js
 var rabbit = require('rabbot');

@@ -1,10 +1,10 @@
 module.exports = {
     connection: {
         protocol:  'amqp://',
-        name:      "some-conn-name",
+        name:      "bugs-bunny", //rabbit. geddit? no? okay..
         user:      'guest',
         pass:      'guest',
-        server:     "your-server",
+        server:     "localhost",
         heartbeat: 30,
         failAfter: 600,
         retryLimit: 600,

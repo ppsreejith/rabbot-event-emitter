@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "node ./test/pub-and-sub.js"
+    "test": "node ./tests/pub-and-sub.js"
   },
   "repository": {
     "type": "git",

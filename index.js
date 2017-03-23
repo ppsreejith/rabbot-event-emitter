@@ -8,21 +8,23 @@ module.exports = function ({config, events, log, listening}) {
     const CONN_NAME = config.connection.name;
     listening = (listening === undefined)?true:listening;
     rabbit.on( "unreachable", function() {
+        log("Couldn't connect. Retrying");
         rabbit.retry();
     });
 
     rabbit.configure(config).then(() => {
         if (listening)
             startListening();
-    }).then(null, function(err) {
-        log(err);
+    }).catch(function(err) {
+        log("Rabbit startup error is", err);
     });
     
     function on(event, listener) {
         events.on(EVENT_PREFIX + event, listener);
     }
 
-    function emit(event, payload) {
+    function emit(event, payload, ct) {
+        ct = ct || 0;
         var message = {};
         message.routingKey = 'email';
         message.body = {
@@ -33,7 +35,11 @@ module.exports = function ({config, events, log, listening}) {
             log('Sending successful! ', payload);
         }).catch(function(err) {
             log("Sending error is", err, ". Trying again..");
-            setTimeout(emit.bind(this, event, payload), 1000);
+            if (ct%5 == 0) {
+                console.log("Retrying rabbit mq connection");
+                rabbit.retry();
+            }
+            setTimeout(emit.bind(this, event, payload, ct+1), Math.max(ct+1, 6)*500);
         });
     }
 

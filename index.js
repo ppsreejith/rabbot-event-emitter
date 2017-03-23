@@ -33,7 +33,7 @@ module.exports = function ({config, events, log, listening}) {
             log('Sending successful! ', payload);
         }).catch(function(err) {
             log("Sending error is", err, ". Trying again..");
-            setTimeout(emit.bind(this, event, payload), 500);
+            setTimeout(emit.bind(this, event, payload), 1000);
         });
     }
 

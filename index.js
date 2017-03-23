@@ -35,7 +35,7 @@ module.exports = function ({config, events, log, listening}) {
             log('Sending successful! ', payload);
         }).catch(function(err) {
             log("Sending error is", err, ". Trying again..");
-            if (ct%5 == 0) {
+            if ((ct+1)%5 == 0) {
                 console.log("Retrying rabbit mq connection");
                 rabbit.retry();
             }

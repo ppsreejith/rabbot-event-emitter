@@ -36,7 +36,7 @@ module.exports = function ({config, events, log, listening}) {
         }).catch(function(err) {
             log("Sending error is", err, ". Trying again..");
             if ((ct+1)%5 == 0) {
-                console.log("Retrying rabbit mq connection");
+                log("Retrying rabbit mq connection");
                 rabbit.retry();
             }
             setTimeout(emit.bind(this, event, payload, ct+1), Math.max(ct+1, 6)*500);
@@ -45,13 +45,13 @@ module.exports = function ({config, events, log, listening}) {
 
     function handleMessage(message) {
         if (!message || !message.body || !message.body.type)
-            log("This message is broken yo!");
+            log("Broken message!", message);
         try {
             events.emit(EVENT_PREFIX + message.body.type, message.body.payload);
+            message.ack();
         } catch(err) {
             message.nack();
         }
-        message.ack();
     };
 
     function startListening() {

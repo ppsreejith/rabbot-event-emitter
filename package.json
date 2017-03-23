@@ -1,6 +1,6 @@
 {
   "name": "rabbot-event-emitter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An event emitter interface over Rabbot",
   "main": "index.js",
   "directories": {

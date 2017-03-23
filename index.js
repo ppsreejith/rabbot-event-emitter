@@ -5,7 +5,6 @@ const EVENT_PREFIX = "RABBITMQ_";
 module.exports = function ({config, events, log, listening}) {
     log = log || function() {};
     events = events || new EventEmitter();
-    const CONN_NAME = config.connection.name;
     listening = (listening === undefined)?true:listening;
     rabbit.on( "unreachable", function() {
         log("Couldn't connect. Retrying");
@@ -17,6 +16,10 @@ module.exports = function ({config, events, log, listening}) {
             startListening();
     }).catch(function(err) {
         log("Rabbit startup error is", err);
+    });
+
+    process.on('SIGINT', () => {
+        rabbit.shutdown();
     });
     
     function on(event, listener) {
@@ -31,7 +34,7 @@ module.exports = function ({config, events, log, listening}) {
             payload: payload,
             type: event,
         };
-        rabbit.publish("worker.exchange", message, CONN_NAME).then(function() {
+        rabbit.publish("worker.exchange", message).then(function() {
             log('Sending successful! ', payload);
         }).catch(function(err) {
             log("Sending error is", err, ". Trying again..");
@@ -49,6 +52,7 @@ module.exports = function ({config, events, log, listening}) {
         try {
             events.emit(EVENT_PREFIX + message.body.type, message.body.payload);
             message.ack();
+            log("Received message", message.body);
         } catch(err) {
             message.nack();
         }
@@ -56,7 +60,10 @@ module.exports = function ({config, events, log, listening}) {
 
     function startListening() {
         rabbit.handle({}, handleMessage);
-        rabbit.startSubscription(config.queues[0].name, config.connection.name);
+        rabbit.onUnhandled( function( message ) {
+            log("Unhandled message here", message);
+        });
+        rabbit.startSubscription(config.queues[0].name);
     };
 
     return {

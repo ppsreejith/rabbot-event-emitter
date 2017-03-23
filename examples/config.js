@@ -1,10 +1,7 @@
 module.exports = {
     connection: {
-        protocol:  'amqp://',
-        name:      "bugs-bunny", //rabbit. geddit? no? okay..
-        user:      'guest',
-        pass:      'guest',
-        server:     "localhost",
+        uri: 'amqp://test:test@localhost/',
+        timeout: 8000,
         heartbeat: 30,
         failAfter: 600,
         retryLimit: 600,
@@ -41,5 +38,13 @@ module.exports = {
             target:         "deadLetter.queue",
             keys:           ["email"]
         }
-    ]
+    ],
+    logging: {
+        adapters: {
+            stdOut: { // adds a console logger at the "info" level
+                level: 3,
+                      bailIfDebug: true
+            }
+        }
+    }
 };
